@@ -1,0 +1,29 @@
+.teacher-popup-header {
+  display: flex;
+  justify-content: space-between;
+}
+.teacher-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.8;
+  background-color: grey;
+}
+
+.teacher-popup-content {
+  background-color: white;
+  border-radius: 15px;
+  padding: 20px;
+  z-index: 5;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+}
+
+.save-button-container {
+  text-align: center;
+  padding-top: 30px;
+}

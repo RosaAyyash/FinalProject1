@@ -1,0 +1,26 @@
+.menu-ul {
+  display: flex;
+  list-style: none;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px;
+}
+
+.logo-img {
+  width: 80px;
+  padding-left: 20px;
+}
+
+.list-item {
+  padding: 10px 20px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.list-item:hover {
+  color: brown;
+}
