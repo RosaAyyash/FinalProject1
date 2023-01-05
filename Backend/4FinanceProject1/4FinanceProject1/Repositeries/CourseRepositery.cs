@@ -49,5 +49,23 @@ namespace _4FinanceProject1.Repositeries
             }
             return course;
         }
+
+        public async Task<Course> UpdateCourseAsync(Guid id, Course course)
+        {
+            var previouscourse = await _TMSDbContext.Courses.FirstOrDefaultAsync(t => t.Id == id);
+            if (previouscourse == null)
+            {
+                return null;
+            }
+
+            previouscourse.Name = course.Name;
+            previouscourse.Description = course.Description;
+            previouscourse.CreditNumber = course.CreditNumber;
+
+            await _TMSDbContext.SaveChangesAsync();
+            return previouscourse;
+
+
+        }
     }
 }

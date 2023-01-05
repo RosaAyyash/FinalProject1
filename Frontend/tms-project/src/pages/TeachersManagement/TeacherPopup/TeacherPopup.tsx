@@ -1,13 +1,16 @@
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./TeacherPopup.css";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { createTeacherRequest } from "../../../store/thunks/TeachersThunk";
-import { useDispatch } from "react-redux";
+import {
+  createTeacherRequest,
+  updateTeacherRequest,
+} from "../../../store/thunks/TeachersThunk";
+import { useDispatch, useSelector } from "react-redux";
 
 type TeacherPopupProps = {
-  id?: number;
+  id?: string;
   closePopup: any;
 };
 
@@ -18,13 +21,26 @@ type TeacherState = {
 };
 
 export default function TeacherPopup(props: TeacherPopupProps) {
+  const teachers = useSelector((state: any) => state.TeachersReducer);
   const dispatch = useDispatch<any>();
+
   //local state
   const [teacher, setTeacher] = useState<TeacherState>({
     name: "",
     email: "",
     speciality: "",
   });
+
+  const getTeacherById = () => {
+    return teachers.filter((teacher: any, index: number) => {
+      if (teacher.id == props.id) {
+        setTeacher(teachers[index]);
+      }
+    });
+  };
+  useEffect(() => {
+    getTeacherById();
+  }, []);
 
   const handleOnNameChange = (event: any) => {
     let value = event.target.value;
@@ -41,8 +57,46 @@ export default function TeacherPopup(props: TeacherPopupProps) {
     setTeacher({ ...teacher, speciality: value });
   };
 
+  const [isSaveButtonDisabled, setSaveButtonDisabled] = useState(false);
+
+  const validator = () => {
+    if (
+      teacher.name === "" ||
+      teacher.email === "" ||
+      teacher.speciality === ""
+    ) {
+      setSaveButtonDisabled(true);
+    } else if (!ValidateEmail(teacher.email)) {
+      setSaveButtonDisabled(true);
+    } else {
+      setSaveButtonDisabled(false);
+    }
+  };
+
+  function ValidateEmail(mail: string) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  useEffect(() => {
+    validator();
+  }, [teacher]);
+
+  //email validator regx
+
   const handleOnSubmit = () => {
-    dispatch(createTeacherRequest(teacher, props.closePopup));
+    props.id
+      ? dispatch(
+          updateTeacherRequest(
+            props.id,
+            { name: teacher.name, speciality: teacher.speciality },
+            props.closePopup
+          )
+        )
+      : dispatch(createTeacherRequest(teacher, props.closePopup));
   };
 
   return (
@@ -81,6 +135,7 @@ export default function TeacherPopup(props: TeacherPopupProps) {
               label="Teacher Email"
               variant="outlined"
               fullWidth
+              disabled={props.id ? true : false}
               name="email"
               value={teacher.email}
               onChange={handleOnEmailChange}
@@ -102,6 +157,7 @@ export default function TeacherPopup(props: TeacherPopupProps) {
               variant="contained"
               type="submit"
               onClick={handleOnSubmit}
+              disabled={isSaveButtonDisabled}
             >
               Save
             </Button>

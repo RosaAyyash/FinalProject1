@@ -13,6 +13,54 @@
   color: white;
 }
 
+@media only screen and (max-width: 620px) {
+  .top-section-title {
+    font-size: 60px;
+    top: 45%;
+    left: 50%;
+  }
+}
+
+@media only screen and (max-width: 555px) {
+  .top-section-title {
+    font-size: 55px;
+    top: 40%;
+    left: 50%;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .top-section-title {
+    font-size: 45px;
+    top: 38%;
+    left: 50%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .top-section-title {
+    font-size: 35px;
+    top: 35%;
+    left: 50%;
+  }
+}
+
+@media only screen and (max-width: 333px) {
+  .top-section-title {
+    font-size: 30px;
+    top: 31%;
+    left: 50%;
+  }
+}
+
+@media only screen and (max-width: 260px) {
+  .top-section-title {
+    font-size: 25px;
+    top: 28%;
+    left: 50%;
+  }
+}
+
 .about-us-container,
 .contact-us-container {
   padding: 0 10%;

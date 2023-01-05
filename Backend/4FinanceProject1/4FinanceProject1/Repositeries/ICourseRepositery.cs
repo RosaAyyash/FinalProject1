@@ -11,5 +11,7 @@ namespace _4FinanceProject1.Repositeries
         Task<Course> CreateCourseAsync(Course course);
 
         Task<Course> DeleteCourseAsync(Guid id);
+
+        Task<Course> UpdateCourseAsync(Guid id, Course course);
     }
 }

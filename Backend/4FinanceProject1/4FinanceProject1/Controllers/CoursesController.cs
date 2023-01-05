@@ -27,7 +27,7 @@ namespace _4FinanceProject1.Controllers
             {
                 var courseDto = new Dtos.CourseDto()
                 {
-                    CourseId = course.Id,
+                    id = course.Id,
                     Name = course.Name,
                     CreditNumber = course.CreditNumber,
                     Description = course.Description,
@@ -42,7 +42,7 @@ namespace _4FinanceProject1.Controllers
         [HttpGet("{id:guid}")]
         [ActionName("GetCourseAsync")]
 
-        public async Task<IActionResult> GetCourse(Guid id)
+        public async Task<IActionResult> GetCourseAsync(Guid id)
         {
             var course = await courseRepositery.GetAsync(id);
             if (course == null)
@@ -52,7 +52,7 @@ namespace _4FinanceProject1.Controllers
 
             var courseDto = new Dtos.CourseDto()
             {
-                CourseId = course.Id,
+                id = course.Id,
                 Name = course.Name,
                 CreditNumber = course.CreditNumber,
                 Description = course.Description,
@@ -73,15 +73,15 @@ namespace _4FinanceProject1.Controllers
 
             course = await courseRepositery.CreateCourseAsync(course);
 
-            var courseDto = new Dtos.CourseDto()
+            var courseDto = new Dtos.CourseDto
             {
-                CourseId = course.Id,
+                id = course.Id,
                 Name = course.Name,
                 CreditNumber = course.CreditNumber,
                 Description = course.Description,
             };
 
-            return CreatedAtAction(nameof(GetCourse), new { id = courseDto.CourseId }, courseDto);
+            return CreatedAtAction(nameof(GetCourseAsync), new { id = courseDto.id }, courseDto);
         }
 
         [HttpDelete("{id:guid}")]
@@ -96,12 +96,43 @@ namespace _4FinanceProject1.Controllers
 
             var courseDto = new Dtos.CourseDto()
             {
+                id = course.Id,
                 Name = course.Name,
                 CreditNumber = course.CreditNumber,
                 Description = course.Description,
             };
 
             return Ok(courseDto);
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateCourse([FromRoute] Guid id, [FromBody] UpdateCourseInputModel updateCourseInputModel)
+        {
+            var course = new Models.Course()
+            {
+                Name = updateCourseInputModel.Name,
+                Description = updateCourseInputModel.Description, 
+                CreditNumber = updateCourseInputModel.CreditNumber,
+            };
+
+            course = await courseRepositery.UpdateCourseAsync(id, course);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            var courseDto = new Dtos.CourseDto()
+            {
+                id = course.Id,
+                Name = course.Name,
+                CreditNumber = course.CreditNumber,
+                Description = course.Description,
+            };
+
+            return Ok(courseDto);
+
+
         }
     }
 }

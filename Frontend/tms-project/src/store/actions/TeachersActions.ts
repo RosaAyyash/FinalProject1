@@ -16,3 +16,9 @@ export const deleteTeacherSuccess = (id: string) => ({
   type: DELETE_TEACHER_SUCCESS,
   payload: id,
 });
+
+export const UPDATE_TEACHER_SUCCESS = "UPDATE_TEACHER_SUCCESS";
+export const updateTeacherSuccess = (teacher: any) => ({
+  type: UPDATE_TEACHER_SUCCESS,
+  payload: teacher,
+});

@@ -12,10 +12,15 @@ const deleteTeacher = (id: string) => {
   return httpCommon.delete(`Teachers/${id}`);
 };
 
+const updateTeacher = (id: string, teacher: any) => {
+  return httpCommon.put(`Teachers/${id}`, teacher);
+};
+
 const TeachersService = {
   getAllTeachers,
   createTeacher,
   deleteTeacher,
+  updateTeacher,
 };
 
 export default TeachersService;

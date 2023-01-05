@@ -4,12 +4,14 @@ namespace _4FinanceProject1.Repositeries
 {
     public interface IStudentRepositery
     {
-        Task<IEnumerable<Student>> GetAllAsync();
+        Task<IEnumerable<Student>> GetAllStudentsAsync();
 
-        Task<Student> GetAsync(Guid id);
+        Task<Student> GetStudentAsync(Guid id);
 
-        Task<Student> CreateAsync(Student student);
+        Task<Student> CreateStudentAsync(Student student);
 
-        Task<Student> DeleteAsync(Guid id);
+        Task<Student> DeleteStudentAsync(Guid id);
+
+        Task<Student> UpdateStudentAsync(Guid id, Student student);
     }
 }

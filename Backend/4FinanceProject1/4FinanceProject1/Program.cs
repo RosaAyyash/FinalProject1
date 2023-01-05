@@ -32,6 +32,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ITeacherRepositery, TeacherRepositery>();
 builder.Services.AddScoped<IStudentRepositery, StudentRepositery>();
 builder.Services.AddScoped<ICourseRepositery, CourseRepositery>();
+builder.Services.AddScoped<IUserRepositery, UserRepositery>();
+
 
 var app = builder.Build();
 

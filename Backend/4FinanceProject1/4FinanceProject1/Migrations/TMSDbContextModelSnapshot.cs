@@ -120,6 +120,25 @@ namespace _4FinanceProject1.Migrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("_4FinanceProject1.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("CourseStudent", b =>
                 {
                     b.HasOne("_4FinanceProject1.Models.Course", null)

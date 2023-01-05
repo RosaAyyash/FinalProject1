@@ -12,7 +12,7 @@ using _4FinanceProject1.Data;
 namespace _4FinanceProject1.Migrations
 {
     [DbContext(typeof(TMSDbContext))]
-    [Migration("20221119201220_InitialMigration")]
+    [Migration("20221208202316_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -121,6 +121,25 @@ namespace _4FinanceProject1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("_4FinanceProject1.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CourseStudent", b =>

@@ -14,15 +14,20 @@ import DeletePopup from "../../components/DeletePopup/DeletePopup";
 //MUI modules
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
-import { Button, Grid, IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Loader from "../../components/Loader/Loader";
+import MessageNotification from "../../components/MessageNotification/MessageNotification";
 
 function TeachersManagement() {
   const dispatch = useDispatch<any>();
 
   //local state
-  const [isTeacherPopup, setIsTeacherPopup] = useState(false);
+  const [teacherPopup, setTeacherPopup] = useState({
+    isTeacherPopup: false,
+    id: "",
+  });
   const [deletePopup, setDeletePopup] = useState({
     isDeletePopup: false,
     id: "",
@@ -31,9 +36,15 @@ function TeachersManagement() {
 
   //redux state
   const teachers = useSelector((state: any) => state.TeachersReducer);
+  const loading = useSelector((state: any) => state.LoadingReducer);
+  const { messageText, messageType } = useSelector(
+    (state: any) => state.MessageReducer
+  );
+  console.log("loading", loading);
   console.log("teachers: ", teachers);
+
   useEffect(() => {
-    dispatch(getAllTeachersRequest());
+    teachers.length <= 0 && dispatch(getAllTeachersRequest());
   }, [dispatch]);
 
   const columns: GridColDef[] = [
@@ -63,19 +74,28 @@ function TeachersManagement() {
       renderCell: (row: any) => {
         return (
           <>
-            <IconButton size="large" title="Edit Teacher" onClick={() => {}}>
-              <EditIcon />
-            </IconButton>
             <IconButton
               size="large"
               title="Edit Teacher"
               onClick={() => {
+                setTeacherPopup({
+                  isTeacherPopup: true,
+                  id: row.row.id,
+                });
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              size="large"
+              title="Delete Teacher"
+              onClick={() =>
                 setDeletePopup({
                   isDeletePopup: true,
                   id: row.row.id,
                   name: row.row.name,
-                });
-              }}
+                })
+              }
             >
               <DeleteIcon />
             </IconButton>
@@ -86,13 +106,22 @@ function TeachersManagement() {
   ];
   //to close the popup turn the TeacherPopup state to Flase
   const closePopup = () => {
-    setIsTeacherPopup(false);
+    setTeacherPopup({ isTeacherPopup: false, id: "" });
     setDeletePopup({ isDeletePopup: false, id: "", name: "" });
   };
 
   return (
     <>
-      {isTeacherPopup ? <TeacherPopup closePopup={closePopup} /> : null}
+      {loading ? <Loader /> : null}
+      {messageText ? (
+        <MessageNotification
+          messageText={messageText}
+          messageType={messageType}
+        />
+      ) : null}
+      {teacherPopup.isTeacherPopup ? (
+        <TeacherPopup closePopup={closePopup} id={teacherPopup.id} />
+      ) : null}
       {deletePopup.isDeletePopup ? (
         <DeletePopup
           closePopup={closePopup}
@@ -104,7 +133,12 @@ function TeachersManagement() {
         <h1 className="titles">Teachers Management</h1>
         <div className="button-container">
           <Button
-            onClick={() => setIsTeacherPopup(true)}
+            onClick={() =>
+              setTeacherPopup({
+                ...teacherPopup,
+                isTeacherPopup: true,
+              })
+            }
             className="create-button"
             color="primary"
             variant="contained"

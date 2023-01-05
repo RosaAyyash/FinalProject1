@@ -1,5 +1,5 @@
 import "./Header.css";
-import Logo from "../../assets/logo.jpeg";
+import Logo from "../../assets/logo.gif";
 import { useNavigate } from "react-router-dom";
 
 function Header() {

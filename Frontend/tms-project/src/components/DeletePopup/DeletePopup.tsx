@@ -18,7 +18,7 @@ function DeletePopup(props: DeletePopupProp) {
       <div className="delete-popup-content">
         <h2>Are you sure you want to {props.name}delete?</h2>
 
-        <div>
+        <div className="button-container">
           <Button
             color="primary"
             variant="contained"

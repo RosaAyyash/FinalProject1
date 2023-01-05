@@ -22,14 +22,14 @@ namespace _4FinanceProject1.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
         {
-            var students = await studentRepositery.GetAllAsync();
+            var students = await studentRepositery.GetAllStudentsAsync();
             var studentsDto = new List<Dtos.StudentDto>();
 
             students.ToList().ForEach(student =>
             {
                 var studentDto = new Dtos.StudentDto()
                 {
-                    StudentId = student.Id,
+                    id = student.Id,
                     Name = student.Name,
                     Email = student.Email,
                     Major = student.Major,
@@ -45,7 +45,7 @@ namespace _4FinanceProject1.Controllers
 
         public async Task<IActionResult> GetStudentAsync(Guid id)
         {
-            var student = await studentRepositery.GetAsync(id);
+            var student = await studentRepositery.GetStudentAsync(id);
 
             if (student == null)
             {
@@ -54,7 +54,7 @@ namespace _4FinanceProject1.Controllers
 
             var studentDto = new Dtos.StudentDto()
             {
-                StudentId = student.Id,
+                id = student.Id,
                 Name = student.Name,
                 Email = student.Email,
                 Major = student.Major,
@@ -74,31 +74,31 @@ namespace _4FinanceProject1.Controllers
                 Major = createStudentInputModel.Major,
             };
 
-            await studentRepositery.CreateAsync(student);
+            await studentRepositery.CreateStudentAsync(student);
 
             var studentDto = new Dtos.StudentDto()
             {
-                StudentId = student.Id,
+                id = student.Id,
                 Name = student.Name,
                 Email = student.Email,
                 Major = student.Major,
             };
 
-            return CreatedAtAction(nameof(GetStudentAsync), new { id = studentDto.StudentId }, studentDto);
+            return CreatedAtAction(nameof(GetStudentAsync), new { id = studentDto.id }, studentDto);
         }
 
         [HttpDelete("{id:guid}")]
 
         public async Task<IActionResult> DeleteStudent(Guid id)
         {
-            var student = await studentRepositery.DeleteAsync(id);
+            var student = await studentRepositery.DeleteStudentAsync(id);
             if (student == null) {
                 return NotFound();
             };
 
             var studentDto = new Dtos.StudentDto()
             {
-                StudentId = student.Id,
+                id = student.Id,
                 Name = student.Name,
                 Email = student.Email,
                 Major = student.Major,
@@ -107,5 +107,33 @@ namespace _4FinanceProject1.Controllers
             return Ok(studentDto);
         }
 
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateStudent([FromRoute]Guid id, [FromBody] UpdateStudentInputModel updateStudentInputModel)
+        {
+            var student = new Models.Student()
+            {
+                Name = updateStudentInputModel.Name,
+                Email = updateStudentInputModel.Email,
+                Major = updateStudentInputModel.Major,
+            };
+
+            student = await studentRepositery.UpdateStudentAsync(id, student);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var studentDto = new Dtos.StudentDto()
+            {
+                id = student.Id,
+                Name = student.Name,
+                Email = student.Email,
+                Major = student.Major,
+            };
+
+            return Ok(studentDto);
+
         }
+
+    }
 }
